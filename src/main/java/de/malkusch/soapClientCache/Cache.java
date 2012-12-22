@@ -42,6 +42,20 @@ abstract public class Cache<K, V> {
 	}
 	
 	/**
+	 * Set the seconds after which stored objects expire.
+	 */
+	public void setExpireSeconds(int expireSeconds) {
+		this.expireSeconds = expireSeconds;
+	}
+	
+	/**
+	 * Returns the seconds after which stored objects expire.
+	 */
+	public int getExpireSeconds() {
+		return expireSeconds;
+	}
+	
+	/**
 	 * Stores an object into the cache.
 	 */
 	public void put(K key, V object) {
@@ -66,7 +80,6 @@ abstract public class Cache<K, V> {
 			return null;
 			
 		}
-		update(payload);
 		return payload.getPayload();
 	}
 	
