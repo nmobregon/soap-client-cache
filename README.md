@@ -7,7 +7,7 @@ Please take care that the map is thread safe! You could use ConcurrentHashMap fo
     Map<String, Payload<SOAPMessage>> map = new ConcurrentHashMap<String, Payload<SOAPMessage>>();
     Cache<String, SOAPMessage> cache = new MapCache<String, SOAPMessage>(60, map);
 
-A generic approach would be a wrapped map by  Collections.synchronizedMap(). If you a
+A generic approach would be a wrapped map by  Collections.synchronizedMap(). If you expect a
 too big amount of cached object you should use a limited Map. Apache Common's LRUMap
 in conjunction with Collections.synchronizedMap() would be a good choice.
 
