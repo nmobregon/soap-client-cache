@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import de.malkusch.soapClientCache.cache.Cache;
 import de.malkusch.soapClientCache.cache.exception.CacheException;
 import de.malkusch.soapClientCache.key.KeyAdapter;
-import de.malkusch.soapClientCache.key.SOAPBodyAdapter;
 import de.malkusch.soapClientCache.key.SOAPMessageAdapter;
 
 /**
@@ -44,7 +43,7 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	 * @see SOAPMessageAdapter
 	 */
 	public CacheHandler(Cache<String, SOAPMessage> cache) {
-		this(cache, new SOAPBodyAdapter());
+		this(cache, new SOAPMessageAdapter());
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {

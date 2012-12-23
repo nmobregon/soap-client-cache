@@ -86,17 +86,31 @@ public class DataSourceCache<K extends Serializable, V extends Serializable>
 	@Override
 	public void put(final K key, final Payload<V> payload) throws CacheException {
 		try {
-			new DataSourceExecution(dataSource,
-					"INSERT INTO soapcache SET cachekey=?, payload=?") {
-
-				@Override
-				protected void setParameters(PreparedStatement statement) throws SQLException {
-					statement.setString(1, adaptKey(key));
-					statement.setObject(2, payload);
-				}
+			try {
+				new DataSourceExecution(dataSource,
+						"INSERT INTO soapcache (cachekey, payload) VALUES(?, ?)") {
+					
+					@Override
+					protected void setParameters(PreparedStatement statement) throws SQLException {
+						statement.setString(1, adaptKey(key));
+						statement.setObject(2, payload);
+					}
+					
+				}.execute();
 				
-			}.execute();
+			} catch (SQLException e) {
+				new DataSourceExecution(dataSource,
+						"UPDATE soapcache SET payload=? WHERE cachekey=?") {
 
+					@Override
+					protected void setParameters(PreparedStatement statement) throws SQLException {
+						statement.setObject(1, payload);
+						statement.setString(2, adaptKey(key));
+					}
+					
+				}.execute();
+				
+			}
 		} catch (SQLException e) {
 			throw new CacheException(e);
 

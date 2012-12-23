@@ -37,5 +37,5 @@ Add the following dependency to your pom.xml
     <dependency>
         <groupId>de.malkusch</groupId>
         <artifactId>soap-client-cache</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </dependency>
