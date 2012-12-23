@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -44,6 +45,11 @@ public class TestCache {
 	public TestCache(Cache<String, String> cache) {
 		this.cache = cache;
 	}
+	
+	@Before
+	public void clearCache() throws CacheException {
+		cache.clear();
+	}
 
 	/**
 	 * Tests get() and put()
@@ -56,7 +62,7 @@ public class TestCache {
 		
 		String object = "object";
 		cache.put(key, object);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			assertEquals(object, cache.get(key));
 			
 		}

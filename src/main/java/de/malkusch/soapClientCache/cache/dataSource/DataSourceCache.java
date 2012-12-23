@@ -23,13 +23,13 @@ import de.malkusch.soapClientCache.cache.exception.CacheException;
  * @see DataSource
  * @author Markus Malkusch <markus@malkusch.de>
  */
-public class DataSourceCache<K extends Serializable, V extends Serializable>
+public class DataSourceCache<K extends Serializable, V>
 		extends Cache<K, V> {
 
 	private DataSource dataSource;
 	
-	private String adaptKey(K key) {
-		return key.toString();
+	private int adaptKey(K key) {
+		return key.hashCode();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class DataSourceCache<K extends Serializable, V extends Serializable>
 		try {
 			new DataSourceExecution(dataSource,
 					"CREATE TABLE soapcache(" +
-					"	cachekey VARCHAR(32) NOT NULL PRIMARY KEY," +
+					"	cachekey INT NOT NULL PRIMARY KEY," +
 					"	payload BLOB)").execute();
 			
 		} catch (SQLException e) {
@@ -61,7 +61,7 @@ public class DataSourceCache<K extends Serializable, V extends Serializable>
 
 				@Override
 				protected void setParameters(PreparedStatement statement) throws SQLException {
-					statement.setString(1, adaptKey(key));
+					statement.setInt(1, adaptKey(key));
 				}
 
 				@Override
@@ -92,7 +92,7 @@ public class DataSourceCache<K extends Serializable, V extends Serializable>
 					
 					@Override
 					protected void setParameters(PreparedStatement statement) throws SQLException {
-						statement.setString(1, adaptKey(key));
+						statement.setInt(1, adaptKey(key));
 						statement.setObject(2, payload);
 					}
 					
@@ -105,7 +105,7 @@ public class DataSourceCache<K extends Serializable, V extends Serializable>
 					@Override
 					protected void setParameters(PreparedStatement statement) throws SQLException {
 						statement.setObject(1, payload);
-						statement.setString(2, adaptKey(key));
+						statement.setInt(2, adaptKey(key));
 					}
 					
 				}.execute();
@@ -131,7 +131,7 @@ public class DataSourceCache<K extends Serializable, V extends Serializable>
 
 				@Override
 				protected void setParameters(PreparedStatement statement) throws SQLException {
-					statement.setString(1, adaptKey(key));
+					statement.setInt(1, adaptKey(key));
 				}
 				
 			}.execute();
@@ -142,6 +142,23 @@ public class DataSourceCache<K extends Serializable, V extends Serializable>
 		} catch (IOException e) {
 			throw new CacheException(e);
 
+		} catch (ClassNotFoundException e) {
+			throw new CacheException(e);
+			
+		}
+	}
+	
+	@Override
+	public void clear() throws CacheException {
+		try {
+			new DataSourceExecution(dataSource, "DELETE FROM soapcache").execute();
+			
+		} catch (SQLException e) {
+			throw new CacheException(e);
+			
+		} catch (IOException e) {
+			throw new CacheException(e);
+			
 		} catch (ClassNotFoundException e) {
 			throw new CacheException(e);
 			

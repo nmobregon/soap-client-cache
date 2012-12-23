@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.malkusch.soapClientCache.CacheHandler;
+import de.malkusch.soapClientCache.cache.exception.CacheException;
 
 /**
  * Cache backed by a map.
@@ -44,6 +45,11 @@ public class MapCache<K, V> extends Cache<K, V> {
 	@Override
 	protected void remove(K key) {
 		map.remove(key);
+	}
+
+	@Override
+	public void clear() throws CacheException {
+		map.clear();
 	}
 
 }

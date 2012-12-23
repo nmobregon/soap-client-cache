@@ -3,36 +3,71 @@ package de.malkusch.soapClientCache.test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.soap.SOAPMessage;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.ECS.client.jax.ItemSearchRequest;
 import com.ECS.client.jax.Items;
+import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 
 import de.malkusch.amazon.ecs.exception.RequestException;
-import de.malkusch.soapClientCache.cache.Cache;
 import de.malkusch.soapClientCache.CacheHandler;
+import de.malkusch.soapClientCache.cache.Cache;
 import de.malkusch.soapClientCache.cache.MapCache;
 import de.malkusch.soapClientCache.cache.Payload;
+import de.malkusch.soapClientCache.cache.dataSource.DataSourceCache;
+import de.malkusch.soapClientCache.cache.exception.CacheException;
 
+@RunWith(Parameterized.class)
 public class TestHandler extends AbstractTest {
 
 	private InvokationHandler invokationHandler;
+	
+	private Cache<String, SOAPMessage> cache;
 
-	public TestHandler() throws IOException {
+	public TestHandler(Cache<String, SOAPMessage> cache) throws IOException {
 		super();
 
-		Map<String, Payload<SOAPMessage>> map = new ConcurrentHashMap<String, Payload<SOAPMessage>>();
-		Cache<String, SOAPMessage> cache = new MapCache<String, SOAPMessage>(60, map);
-		CacheHandler cacheHandler = new CacheHandler(cache);
-		api.prependHandler(cacheHandler);
-
+		this.cache = cache;
+		api.prependHandler(new CacheHandler(cache));
+		
 		invokationHandler = new InvokationHandler();
 		api.appendHandler(invokationHandler);
+	}
+	
+	@Before
+	public void resetInvokationHandler() {
+		invokationHandler.reset();
+	}
+	
+	@Before
+	public void clearCache() throws CacheException {
+		cache.clear();
+	}
+	
+	@Parameters
+	public static Collection<Object[]> getParameters() throws IOException, ClassNotFoundException {
+		Collection<Object[]> cases = new ArrayList<Object[]>();
+
+		cases.add(new Object[] {
+				new MapCache<String, SOAPMessage>(
+						10, new ConcurrentHashMap<String, Payload<SOAPMessage>>()) });
+		
+		MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
+		dataSource.setUser("test");
+		dataSource.setDatabaseName("test");
+		cases.add(new Object[]{new DataSourceCache<String, SOAPMessage>(10, dataSource)});
+
+		return cases;
 	}
 
 	@Test

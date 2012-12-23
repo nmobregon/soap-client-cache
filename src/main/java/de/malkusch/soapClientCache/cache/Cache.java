@@ -22,6 +22,8 @@ abstract public class Cache<K, V> {
 	 */
 	private int expireSeconds;
 
+	private PayloadFactory<V> payloadFactory = new PayloadFactory<V>();
+	
 	/**
 	 * Returns a cached object or null.
 	 */
@@ -38,10 +40,22 @@ abstract public class Cache<K, V> {
 	abstract protected void remove(K key) throws CacheException;
 	
 	/**
+	 * Clears the cache
+	 */
+	abstract public void clear() throws CacheException;
+	
+	/**
 	 * Set the seconds after which stored objects expire.
 	 */
 	public Cache(int expireSeconds) {
 		this.expireSeconds = expireSeconds;
+	}
+	
+	/**
+	 * Sets a PayloadFactory
+	 */
+	public void setPayloadFactory(PayloadFactory<V> factory) {
+		this.payloadFactory = factory;
 	}
 	
 	/**
@@ -63,7 +77,7 @@ abstract public class Cache<K, V> {
 	 * @throws CacheException 
 	 */
 	public void put(K key, V object) throws CacheException {
-		Payload<V> payload = new Payload<V>(object);
+		Payload<V> payload = payloadFactory.getInstance(object);
 		update(payload);
 		put(key, payload);
 	}

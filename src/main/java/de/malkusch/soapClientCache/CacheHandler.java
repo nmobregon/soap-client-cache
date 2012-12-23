@@ -15,6 +15,7 @@ import de.malkusch.soapClientCache.cache.Cache;
 import de.malkusch.soapClientCache.cache.exception.CacheException;
 import de.malkusch.soapClientCache.key.KeyAdapter;
 import de.malkusch.soapClientCache.key.SOAPMessageAdapter;
+import de.malkusch.soapClientCache.message.SOAPMessagePayloadFactory;
 
 /**
  * Adds caching to a SOAP client.
@@ -32,9 +33,16 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	
 	private KeyAdapter keyAdapter;
 	
+	/**
+	 * Initializes this object
+	 * 
+	 * The cache is decorated with a SOAPMessagePayloadFactory.
+	 */
 	public CacheHandler(Cache<String, SOAPMessage> cache, KeyAdapter keyAdapter) {
 		this.cache = cache;
 		this.keyAdapter = keyAdapter;
+		
+		cache.setPayloadFactory(new SOAPMessagePayloadFactory());
 	}
 	
 	/**

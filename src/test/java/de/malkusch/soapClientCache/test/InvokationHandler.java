@@ -32,7 +32,7 @@ public class InvokationHandler implements SOAPHandler<SOAPMessageContext> {
 			this.outbound = true;
 			
 		} else {
-			this.inbound = true;
+			inbound = true;
 			
 		}
 		return true;
