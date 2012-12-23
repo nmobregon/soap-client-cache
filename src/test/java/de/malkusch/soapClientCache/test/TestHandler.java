@@ -27,7 +27,7 @@ public class TestHandler extends AbstractTest {
 		Map<String, Payload<SOAPMessage>> map = new ConcurrentHashMap<String, Payload<SOAPMessage>>();
 		Cache<String, SOAPMessage> cache = new MapCache<String, SOAPMessage>(60, map);
 		CacheHandler cacheHandler = new CacheHandler(cache);
-		api.appendHandler(cacheHandler);
+		api.prependHandler(cacheHandler);
 	}
 
 	@Test
