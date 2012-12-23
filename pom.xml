@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.malkusch</groupId>
 	<artifactId>soap-client-cache</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>Client SOAP cache</name>
 	<description>SoapHandler implementing a client cache</description>
 	<url>https://github.com/malkusch/soap-client-cache</url>
@@ -48,6 +48,12 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.2</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.22</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

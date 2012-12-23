@@ -12,9 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.malkusch.soapClientCache.cache.Cache;
-import de.malkusch.soapClientCache.exception.KeyException;
+import de.malkusch.soapClientCache.cache.exception.CacheException;
 import de.malkusch.soapClientCache.key.KeyAdapter;
-import de.malkusch.soapClientCache.key.SoapMessageAdapter;
+import de.malkusch.soapClientCache.key.SOAPBodyAdapter;
+import de.malkusch.soapClientCache.key.SOAPMessageAdapter;
 
 /**
  * Adds caching to a SOAP client.
@@ -40,10 +41,10 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	/**
 	 * Creates a CacheHandler with SoapMessageAdapter for generating cache keys
 	 * 
-	 * @see SoapMessageAdapter
+	 * @see SOAPMessageAdapter
 	 */
 	public CacheHandler(Cache<String, SOAPMessage> cache) {
-		this(cache, new SoapMessageAdapter());
+		this(cache, new SOAPBodyAdapter());
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {
@@ -67,7 +68,7 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 				return false;
 	
 			}
-		} catch (KeyException e) {
+		} catch (CacheException e) {
 			logger.warn("skip cache lookup", e);
 			return true;
 			
@@ -75,12 +76,19 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	}
 
 	private boolean handleResponseMessage(SOAPMessageContext context) {
-		String cacheKey = (String) context.get(CACHE_KEY);
-		if (cacheKey != null) {
-			cache.put(cacheKey, context.getMessage());
+		try {
+			String cacheKey = (String) context.get(CACHE_KEY);
+			if (cacheKey != null) {
+				cache.put(cacheKey, context.getMessage());
+				
+			}
+			return true;
+			
+		} catch (CacheException e) {
+			logger.warn("skip cache storing", e);
+			return true;
 			
 		}
-		return true;
 	}
 
 	public boolean handleFault(SOAPMessageContext context) {

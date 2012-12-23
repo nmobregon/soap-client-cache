@@ -1,5 +1,6 @@
 package de.malkusch.soapClientCache.cache;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -9,8 +10,10 @@ import java.util.Calendar;
  * 
  * @author Markus Malkusch <markus@malkusch.de>
  */
-public class Payload<T> {
+public class Payload<T> implements Serializable {
 	
+	private static final long serialVersionUID = 6235483024218533135L;
+
 	private T payload;
 	
 	private Calendar expiration = Calendar.getInstance();

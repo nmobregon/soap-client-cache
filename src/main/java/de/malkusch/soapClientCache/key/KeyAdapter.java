@@ -2,7 +2,7 @@ package de.malkusch.soapClientCache.key;
 
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-import de.malkusch.soapClientCache.exception.KeyException;
+import de.malkusch.soapClientCache.cache.exception.KeyException;
 
 /**
  * Converts T to String which can be used as a cache key

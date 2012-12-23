@@ -6,14 +6,14 @@ import java.io.IOException;
 import javax.xml.soap.SOAPException;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-import de.malkusch.soapClientCache.exception.KeyException;
+import de.malkusch.soapClientCache.cache.exception.KeyException;
 
 /**
  * Generates a key from the complete SOAP message (including headers).
  * 
  * @author Markus Malkusch <markus@malkusch.de>
  */
-public class SoapMessageAdapter implements KeyAdapter {
+public class SOAPMessageAdapter implements KeyAdapter {
 
 	@Override
 	public String adapt(SOAPMessageContext context) throws KeyException {

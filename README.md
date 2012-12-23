@@ -11,6 +11,9 @@ A generic approach would be a wrapped map by  Collections.synchronizedMap(). If 
 too big amount of cached objects you should use a limited Map. Apache Common's LRUMap
 in conjunction with Collections.synchronizedMap() would be a good choice.
 
+If you don't want to keep your cache in memory at all you can use the DataSourceCache.
+Consider using a pooled DataSource (e.g. tomcat's jdbc-pool).
+
 Now you can create the CacheHandler and append it to your SOAP port.
 
     CacheHandler cacheHandler = new CacheHandler(cache);
