@@ -1,8 +1,10 @@
-package de.malkusch.soapClientCache;
+package de.malkusch.soapClientCache.cache;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import de.malkusch.soapClientCache.CacheHandler;
 
 /**
  * Cache backed by a map.

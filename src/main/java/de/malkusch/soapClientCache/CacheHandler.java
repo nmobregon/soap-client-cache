@@ -1,11 +1,8 @@
 package de.malkusch.soapClientCache;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
@@ -13,6 +10,11 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.malkusch.soapClientCache.cache.Cache;
+import de.malkusch.soapClientCache.exception.KeyException;
+import de.malkusch.soapClientCache.key.KeyAdapter;
+import de.malkusch.soapClientCache.key.SoapMessageAdapter;
 
 /**
  * Adds caching to a SOAP client.
@@ -28,8 +30,20 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 
 	private Cache<String, SOAPMessage> cache;
 	
-	public CacheHandler(Cache<String, SOAPMessage> cache) {
+	private KeyAdapter keyAdapter;
+	
+	public CacheHandler(Cache<String, SOAPMessage> cache, KeyAdapter keyAdapter) {
 		this.cache = cache;
+		this.keyAdapter = keyAdapter;
+	}
+	
+	/**
+	 * Creates a CacheHandler with SoapMessageAdapter for generating cache keys
+	 * 
+	 * @see SoapMessageAdapter
+	 */
+	public CacheHandler(Cache<String, SOAPMessage> cache) {
+		this(cache, new SoapMessageAdapter());
 	}
 
 	public boolean handleMessage(SOAPMessageContext context) {
@@ -41,9 +55,7 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 
 	private boolean handleRequestMessage(SOAPMessageContext context) {
 		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			context.getMessage().writeTo(out);
-			String cacheKey = new String(out.toByteArray(), "UTF-8");
+			String cacheKey = keyAdapter.adapt(context);
 			
 			SOAPMessage cachedMessage = cache.get(cacheKey);
 			if (cachedMessage == null) {
@@ -55,11 +67,7 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 				return false;
 	
 			}
-		} catch (SOAPException e) {
-			logger.warn("skip cache lookup", e);
-			return true;
-			
-		} catch (IOException e) {
+		} catch (KeyException e) {
 			logger.warn("skip cache lookup", e);
 			return true;
 			

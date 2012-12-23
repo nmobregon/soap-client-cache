@@ -9,9 +9,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import de.malkusch.soapClientCache.Cache;
-import de.malkusch.soapClientCache.MapCache;
-import de.malkusch.soapClientCache.Payload;
+import de.malkusch.soapClientCache.cache.Cache;
+import de.malkusch.soapClientCache.cache.MapCache;
+import de.malkusch.soapClientCache.cache.Payload;
 
 import static org.junit.Assert.*;
 

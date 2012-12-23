@@ -1,4 +1,4 @@
-package de.malkusch.soapClientCache;
+package de.malkusch.soapClientCache.cache;
 
 import java.util.Calendar;
 
