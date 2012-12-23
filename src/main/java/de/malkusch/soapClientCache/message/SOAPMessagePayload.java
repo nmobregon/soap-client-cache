@@ -30,7 +30,7 @@ public class SOAPMessagePayload extends Payload<SOAPMessage> {
 		try {
 			ByteArrayOutputStream xmlBytes = new ByteArrayOutputStream();
 			getPayload().writeTo(xmlBytes);
-			String xml = new String(xmlBytes.toByteArray(), "UTF-8");
+			byte[] xml = xmlBytes.toByteArray();
 		
 			SerializablePayload stringPayload = new SerializablePayload(xml);
 			stringPayload.setExpiration(getExpiration());
