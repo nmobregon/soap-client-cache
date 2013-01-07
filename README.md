@@ -9,7 +9,7 @@ Map<String, Payload<SOAPMessage>> map = new ConcurrentHashMap<String, Payload<SO
 Cache<String, SOAPMessage> cache = new MapCache<String, SOAPMessage>(60, map);
 ```
 
-A generic approach would be a wrapped map by ```java Collections.synchronizedMap()```. If you expect a
+A generic approach would be a wrapped map by ```Collections.synchronizedMap()```. If you expect a
 too big amount of cached objects you should use a limited Map. Apache Common's LRUMap
 in conjunction with Collections.synchronizedMap() would be a good choice.
 
