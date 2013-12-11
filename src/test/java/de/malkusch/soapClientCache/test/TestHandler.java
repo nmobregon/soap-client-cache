@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.soap.SOAPMessage;
 
+import org.h2.jdbcx.JdbcConnectionPool;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.ECS.client.jax.ItemSearchRequest;
 import com.ECS.client.jax.Items;
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 
 import de.malkusch.amazon.ecs.exception.RequestException;
 import de.malkusch.soapClientCache.CacheHandler;
@@ -62,9 +62,8 @@ public class TestHandler extends AbstractTest {
 				new MapCache<String, SOAPMessage>(
 						10, new ConcurrentHashMap<String, Payload<SOAPMessage>>()) });
 		
-		MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
-		dataSource.setUser("test");
-		dataSource.setDatabaseName("test");
+		JdbcConnectionPool dataSource = JdbcConnectionPool.create(
+				"jdbc:h2:mem;TRACE_LEVEL_FILE=0", "", "");
 		cases.add(new Object[]{new DataSourceCache<String, SOAPMessage>(10, dataSource)});
 
 		return cases;

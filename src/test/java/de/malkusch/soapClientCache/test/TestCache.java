@@ -1,19 +1,20 @@
 package de.malkusch.soapClientCache.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.h2.jdbcx.JdbcConnectionPool;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 
 import de.malkusch.soapClientCache.cache.Cache;
 import de.malkusch.soapClientCache.cache.MapCache;
@@ -34,9 +35,8 @@ public class TestCache {
 				new MapCache<String, String>(
 						1, new ConcurrentHashMap<String, Payload<String>>()) });
 		
-		MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
-		dataSource.setUser("test");
-		dataSource.setDatabaseName("test");
+		JdbcConnectionPool dataSource = JdbcConnectionPool.create(
+				"jdbc:h2:mem;TRACE_LEVEL_FILE=0", "", "");
 		cases.add(new Object[]{new DataSourceCache<String, String>(1, dataSource)});
 
 		return cases;

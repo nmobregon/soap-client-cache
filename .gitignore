@@ -3,3 +3,4 @@
 .settings
 target
 src/test/resources/
+mem.h2.db

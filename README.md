@@ -27,23 +27,12 @@ binding.setHandlerChain(handlerList);
 ```
 
 # Maven
-You find this package in my maven repository: http://mvn.malkusch.de
-
-```xml
-<repositories>
-    <repository>
-        <id>malkusch.de</id>
-        <url>http://mvn.malkusch.de/</url>
-    </repository>
-</repositories>
-```
-
-Add the following dependency to your pom.xml
+You find this package in Maven central:
 
 ```xml
 <dependency>
     <groupId>de.malkusch</groupId>
     <artifactId>soap-client-cache</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
