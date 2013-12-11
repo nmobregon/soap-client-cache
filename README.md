@@ -31,8 +31,8 @@ You find this package in Maven central:
 
 ```xml
 <dependency>
-    <groupId>de.malkusch</groupId>
+    <groupId>de.malkusch.soap-client-cache</groupId>
     <artifactId>soap-client-cache</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
