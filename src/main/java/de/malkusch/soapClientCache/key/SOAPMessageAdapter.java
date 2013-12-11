@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.xml.soap.SOAPException;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-import de.malkusch.soapClientCache.cache.exception.KeyException;
+import de.malkusch.soapClientCache.exception.KeyException;
 
 /**
  * Generates a key from the complete SOAP message (including headers).

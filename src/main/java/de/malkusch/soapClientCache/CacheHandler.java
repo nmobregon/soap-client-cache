@@ -2,6 +2,7 @@ package de.malkusch.soapClientCache;
 
 import java.util.Set;
 
+import javax.cache.Cache;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
@@ -11,11 +12,9 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.malkusch.soapClientCache.cache.Cache;
-import de.malkusch.soapClientCache.cache.exception.CacheException;
+import de.malkusch.soapClientCache.exception.KeyException;
 import de.malkusch.soapClientCache.key.KeyAdapter;
 import de.malkusch.soapClientCache.key.SOAPMessageAdapter;
-import de.malkusch.soapClientCache.message.SOAPMessagePayloadFactory;
 
 /**
  * Adds caching to a SOAP client.
@@ -28,7 +27,7 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	final static public String CACHE_KEY = CacheHandler.class.getName() + ".cacheKey";
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
-
+	
 	private Cache<String, SOAPMessage> cache;
 	
 	private KeyAdapter keyAdapter;
@@ -41,8 +40,6 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	public CacheHandler(Cache<String, SOAPMessage> cache, KeyAdapter keyAdapter) {
 		this.cache = cache;
 		this.keyAdapter = keyAdapter;
-		
-		cache.setPayloadFactory(new SOAPMessagePayloadFactory());
 	}
 	
 	/**
@@ -54,6 +51,7 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 		this(cache, new SOAPMessageAdapter());
 	}
 
+	@Override
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean outbound = (Boolean) context
 				.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
@@ -75,7 +73,7 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 				return false;
 	
 			}
-		} catch (CacheException e) {
+		} catch (KeyException e) {
 			logger.warn("skip cache lookup", e);
 			return true;
 			
@@ -83,28 +81,24 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	}
 
 	private boolean handleResponseMessage(SOAPMessageContext context) {
-		try {
-			String cacheKey = (String) context.get(CACHE_KEY);
-			if (cacheKey != null) {
-				cache.put(cacheKey, context.getMessage());
-				
-			}
-			return true;
-			
-		} catch (CacheException e) {
-			logger.warn("skip cache storing", e);
-			return true;
+		String cacheKey = (String) context.get(CACHE_KEY);
+		if (cacheKey != null) {
+			cache.put(cacheKey, context.getMessage());
 			
 		}
+		return true;
 	}
 
+	@Override
 	public boolean handleFault(SOAPMessageContext context) {
 		return true;
 	}
 
+	@Override
 	public void close(MessageContext context) {
 	}
 
+	@Override
 	public Set<QName> getHeaders() {
 		return null;
 	}

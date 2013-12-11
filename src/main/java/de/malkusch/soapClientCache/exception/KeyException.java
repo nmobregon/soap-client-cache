@@ -1,6 +1,7 @@
-package de.malkusch.soapClientCache.cache.exception;
+package de.malkusch.soapClientCache.exception;
 
-public class KeyException extends CacheException {
+
+public class KeyException extends CacheHandlerException {
 
 	private static final long serialVersionUID = -4247365240199753670L;
 

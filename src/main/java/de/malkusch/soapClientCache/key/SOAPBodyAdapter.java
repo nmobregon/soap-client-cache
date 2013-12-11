@@ -15,7 +15,7 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 import org.w3c.dom.Document;
 
-import de.malkusch.soapClientCache.cache.exception.KeyException;
+import de.malkusch.soapClientCache.exception.KeyException;
 
 /**
  * Generates a key from the SOAP body.
