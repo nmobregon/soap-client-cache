@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.malkusch.soap-client-cache</groupId>
 	<artifactId>soap-client-cache</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 	
 	<parent>
 		<groupId>de.malkusch.parent</groupId>
