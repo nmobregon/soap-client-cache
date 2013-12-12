@@ -17,7 +17,7 @@ import de.malkusch.soapClientCache.key.KeyAdapter;
 import de.malkusch.soapClientCache.key.SOAPMessageAdapter;
 
 /**
- * Adds caching to a SOAP client.
+ * Adds JCache (JSR-107) caching to a JAX-WS SOAP client.
  * 
  * @author Markus Malkusch <markus@malkusch.de>
  * @see Cache
@@ -34,8 +34,6 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	
 	/**
 	 * Initializes this object
-	 * 
-	 * The cache is decorated with a SOAPMessagePayloadFactory.
 	 */
 	public CacheHandler(Cache<String, SOAPMessage> cache, KeyAdapter keyAdapter) {
 		this.cache = cache;
