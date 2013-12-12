@@ -11,7 +11,7 @@ config.setStoreByValue(true);
 try (
 		CachingProvider cachingProvider = Caching.getCachingProvider();
 		CacheManager cacheManager = cachingProvider.getCacheManager();
-		Cache<String, SOAPMessage> cacheResource = cacheManager.createCache("soap", config)) {
+		Cache<String, SOAPMessage> cache = cacheManager.createCache("soap", config)) {
 	
 	CacheHandler cacheHandler = new CacheHandler(cache);
 	
