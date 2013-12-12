@@ -23,7 +23,7 @@ public class SerializableSOAPMessage extends SOAPMessage implements
 
 	private static final long serialVersionUID = -1514939541423262619L;
 
-	private SOAPMessage message;
+	private transient SOAPMessage message;
 
 	public SerializableSOAPMessage(SOAPMessage message) {
 		this.message = message;
@@ -31,6 +31,7 @@ public class SerializableSOAPMessage extends SOAPMessage implements
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		try {
+			out.defaultWriteObject();
 			message.writeTo(out);
 			
 		} catch (SOAPException e) {
