@@ -1,4 +1,4 @@
-package de.malkusch.soapClientCache.test;
+package de.malkusch.soapClientCache.test.helper;
 
 import java.util.Set;
 

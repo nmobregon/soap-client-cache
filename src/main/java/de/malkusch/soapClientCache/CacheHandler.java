@@ -83,7 +83,7 @@ public class CacheHandler implements SOAPHandler<SOAPMessageContext> {
 	private boolean handleResponseMessage(SOAPMessageContext context) {
 		String cacheKey = (String) context.get(CACHE_KEY);
 		if (cacheKey != null) {
-			cache.put(cacheKey, context.getMessage());
+			cache.put(cacheKey, new SerializableSOAPMessage(context.getMessage()));
 			
 		}
 		return true;
