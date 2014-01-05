@@ -59,8 +59,7 @@
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<useReleaseProfile>true</useReleaseProfile>
-					<releaseProfiles>unversionedTestResources</releaseProfiles>
+					<arguments>-Psonatype-oss-release,unversionedTestResources</arguments>
 				</configuration>
 			</plugin>
 		</plugins>
