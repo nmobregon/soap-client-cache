@@ -29,7 +29,7 @@ You find this package in Maven central:
 <dependency>
     <groupId>de.malkusch.soap-client-cache</groupId>
     <artifactId>soap-client-cache</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.3</version>
 </dependency>
 ```
 
