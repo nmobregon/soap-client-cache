@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>de.malkusch.parent</groupId>
 		<artifactId>oss-parent</artifactId>
-		<version>1.7</version>
+		<version>1.10</version>
 	</parent>
 
 	<name>Client SOAP cache</name>
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>org.infinispan</groupId>
 			<artifactId>infinispan-jcache</artifactId>
-			<version>7.0.0.CR2</version>
+			<version>7.2.1.Final</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
